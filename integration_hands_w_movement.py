@@ -151,17 +151,6 @@ def get_gesture(handLms):
     wrist = handLms.landmark[TH.WRIST]
 
 
-# for the fist
-if all(tip.y > wrist.y for tip in tips):
-    return "fist"
-#palm up
-if all(tip.y < wrist.y for tip in tips):
-    return "palm_up"
-#left and right
-index_tip = tips[1] #for detecting a point
-other_tips = [tips[i] for i in [0,2,3,4]]
-#ggg
-
 if index_tip.y < wrist.y and all(t.y > wrist.y for t in other_tips):
     if index_tip.x < wrist.x - 0.05:
         return "left"
@@ -191,10 +180,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-        if event.type == PAUSE_EVENT:
-            print("PAUSE")
-        if event.type == RESUME_EVENT:
-            print("RESUME")
+
         if event.type == LEFT_EVENT:
             print("LEFT")
         if event.type == RIGHT_EVENT:
@@ -214,10 +200,6 @@ while running:
         g = get_gesture(hand)
 
 # sending the signals for game response
-    if gesture == "palm_up":
-        pygame.event.post(pygame.event.Event(PAUSE_EVENT))
-    elif gesture == "fist":
-        pygame.event.post(pygame.event.Event(RESUME_EVENT))
     elif gesture == "left":
         pygame.event.post(pygame.event.Event(LEFT_EVENT))
     elif gesture == "right":
