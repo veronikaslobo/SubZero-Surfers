@@ -1,6 +1,7 @@
 import pygame
 import numpy
 import math
+import os
 
 pygame.init()
 
@@ -14,9 +15,10 @@ fps = 60
 
 # Class of our car (can be smt else, decide later)
 class Player:
-    def __init__(self, x, y, width, height):
-        self.x = x
-        self.y = y
+    def __init__(self, x,, image_path):
+        self.x_axis_position = x
+        self.y_axis_position = HEIGHT / 10 # to see with the UI
+        self.wi
 
 # main game
 def main():
