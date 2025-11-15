@@ -28,6 +28,10 @@ YELLOW =(254,234,160)
 
 # initialize environment
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+clock = pygame.time.Clock()
+obstacles = []
+spawn_timer = 0
+game_speed = 5
 
 
 #running the game
@@ -45,7 +49,7 @@ while running:
     # Fill the background with white
 
     # generate obstacles
-    if spawn_timer > 90:
+    if spawn_timer > 100:
         obstacles.append(spawn_obstacle())
         spawn_timer = 0
         # Update and draw obstacles
