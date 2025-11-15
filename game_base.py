@@ -43,7 +43,17 @@ while running:
             running = False
 
     # Fill the background with white
-    screen.fill(BLUE)
+
+    # generate obstacles
+    if spawn_timer > 90:
+        obstacles.append(spawn_obstacle())
+        spawn_timer = 0
+        # Update and draw obstacles
+    for obs in obstacles:
+        obs.update()
+        obs.draw(screen)
+        # Remove off-screen obstacles
+    obstacles = [obs for obs in obstacles if obs.rect.top <= SCREEN_HEIGHT]
 
     # Flip the display
     pygame.display.flip()

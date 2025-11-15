@@ -1,6 +1,5 @@
 import pygame
 import random
-import player
 from obstacle_definition import Obstacle, spawn_obstacle, obs_imgs, LANES
 
 # initializing environment
@@ -9,7 +8,6 @@ pygame.init()
 # CONSTANTS
 SCREEN_WIDTH, SCREEN_HEIGHT = 800, 600
 FPS = 60
-OBSTACLE_WIDTH, OBSTACLE_HEIGHT = 50, 50
 PLAYER_WIDTH, PLAYER_HEIGHT = 50, 50
 
 # COLORS

@@ -1,14 +1,22 @@
 import pygame
 import random
 
+# initializing and constants
 pygame.init()
+LANES=[200, 400,300]
+game_speed= 5
+TARGET_SIZE =(100,100)
+screen = pygame.display.set_mode((800, 600))
+
 # defining images
-glacier_img = pygame.image.load("images/glacier1.png")
+glacier = pygame.image.load("images/glacier1.png").convert_alpha()
+glacier_img = pygame.transform.scale(glacier,TARGET_SIZE)
+
+glacier_puddle = pygame.image.load("images/glacier_puddle.png").convert_alpha()
+ice_puddle_img = pygame.transform.scale(glacier_puddle,TARGET_SIZE)
 
 # obstacle images array
-obs_imgs = [glacier_img]
-LANES=[50,100,150]
-game_speed= 5
+obs_imgs = [glacier_img,ice_puddle_img]
 
 class Obstacle:
     def __init__(self, image, x, y,speed):
