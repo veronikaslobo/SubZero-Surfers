@@ -29,11 +29,10 @@ def check_for_collision(player, obstacle):
     obstacle_left = obstacle.rect.x
     obstacle_right = obstacle.rect.x + obstacle.width
     obstacle_top = obstacle.rect.y
+    obstacle_bottom = obstacle.rect.y + obstacle.height
 
 
     if (player_right > obstacle_left and player_left < obstacle_right and player_bottom > obstacle_top and player_top < obstacle_bottom):
-        return True
-    return False
+        global.collide = + 1
 
     # updates the collide variable
-    collide =+ 1
