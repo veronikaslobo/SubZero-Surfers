@@ -1,7 +1,7 @@
 import pygame
 import random
 import player
-import obstacle_definition
+from obstacle_definition import Obstacle, spawn_obstacle, obs_imgs, LANES
 
 
 # initializing environment
@@ -25,9 +25,6 @@ YELLOW =(254,234,160)
 
 # obstacles
 
-# creating obstacles array form pictures
-
-
 
 # initialize environment
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -36,6 +33,9 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 #running the game
 running = True
 while running:
+    # clock and timer
+    clock.tick(FPS)
+    spawn_timer += 1
 
     # Did the user click the window close button?
     for event in pygame.event.get():
@@ -44,10 +44,6 @@ while running:
 
     # Fill the background with white
     screen.fill(BLUE)
-
-    # Draw a solid blue circle in the center
-    pygame.draw.circle(screen, PURPLE, (250, 250), 75)
-
 
     # Flip the display
     pygame.display.flip()
