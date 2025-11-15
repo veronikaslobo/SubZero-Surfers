@@ -23,3 +23,8 @@ YELLOW =(254,234,160)
 
 # obstacle
 
+screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
+
+pygame.draw.circle(screen,(PURPLE), (250, 250), 75))
+
+pygame.display.flip()
