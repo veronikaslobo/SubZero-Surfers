@@ -47,6 +47,7 @@ if all(tip.y < wrist.y for tip in tips):
 #left and right
 index_tip = tips[1] #for detecting a point
 other_tips = [tips[i] for i in [0,2,3,4]]
+#ggg
 
 if index_tip.y < wrist.y and all(t.y > wrist.y for t in other_tips):
     if index_tip.x < wrist.x - 0.05:
