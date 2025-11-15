@@ -36,4 +36,3 @@ def check_for_collision(player, obstacle):
         global.collide = + 1
 
     # updates the collide variable
-    collide =+ 1
