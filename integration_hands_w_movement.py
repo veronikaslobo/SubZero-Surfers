@@ -101,8 +101,8 @@ def main():
             if event.type == pygame.QUIT:
                run = False
             if event.key == pygame.K_RIGHT:
-               peng.move_right()
-           if event.key == pygame.K_LEFT:
+                peng.move_right()
+            if event.key == pygame.K_LEFT:
                peng.move_left()
 
        peng.update()
