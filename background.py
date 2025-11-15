@@ -55,8 +55,6 @@ def scroll_bg():
 
     tiles = math.ceil(SCREEN_HEIGHT / bg_width) + 1
 
-    clock.tick(FPS)
-
     scroll = (scroll + 5) % bg_height
 
     screen.blit(bg, (0, scroll - bg_height))

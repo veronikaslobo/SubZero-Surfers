@@ -1,11 +1,13 @@
 import pygame
 import random
 import player
+from background import scroll_bg
 from obstacle_definition import Obstacle, spawn_obstacle, obs_imgs, LANES
 
 
 # initializing environment
 pygame.init()
+clock = pygame.time.Clock()
 
 # CONSTANTS
 SCREEN_WIDTH, SCREEN_HEIGHT = 800, 600
@@ -28,10 +30,6 @@ YELLOW =(254,234,160)
 
 # initialize environment
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-clock = pygame.time.Clock()
-obstacles = []
-spawn_timer = 0
-game_speed = 5
 
 
 #running the game
@@ -47,17 +45,7 @@ while running:
             running = False
 
     # Fill the background with white
-
-    # generate obstacles
-    if spawn_timer > 100:
-        obstacles.append(spawn_obstacle())
-        spawn_timer = 0
-        # Update and draw obstacles
-    for obs in obstacles:
-        obs.update()
-        obs.draw(screen)
-        # Remove off-screen obstacles
-    obstacles = [obs for obs in obstacles if obs.rect.top <= SCREEN_HEIGHT]
+    screen.fill(BLUE)
 
     # Flip the display
     pygame.display.flip()
