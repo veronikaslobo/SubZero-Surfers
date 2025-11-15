@@ -77,6 +77,7 @@ class Player:
 def main():
 
     peng = Player()
+    game_over = False
 
 # closes the game if the user presses on X
     run = True
