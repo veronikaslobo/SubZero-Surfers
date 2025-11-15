@@ -16,10 +16,10 @@ RESUME_EVENT = pygame.USEREVENT + 2
 LEFT_EVENT = pygame.USEREVENT + 3
 RIGHT_EVENT = pygame.USEREVENT + 4
 
-# -----MEDIAPIPE-----
-# MediaPipe
 mp_draw = mp.solutions.drawing_utils #to draw dots and lines on the hand landmarks.
-mp_hands = mp.solutions.hands  # Loads the MediaPipe Hands model.
+mp_hands = mp.solutions.hands  # Loads the MediaPipe Hand
+# -----MEDIAPIPE-----
+# MediaPipes model.
 hands = mp_hands.Hands(max_num_hands=1) # cuz we only need one
 
 # use cap to start the camera
