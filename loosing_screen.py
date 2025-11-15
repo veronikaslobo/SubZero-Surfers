@@ -8,5 +8,10 @@ class Obstacle:
         self.speed = speed
         self.active = True             # Whether the obstacle is active in the game
 
+    def update(self): # moves down (with game speed)
+        self.rect.y += self.speed
+
+    def draw(self, screen):
+        screen.blit(self.image, self.rect)  # maps image to rect position
 
 def check_for_collision(player, obstacle):
