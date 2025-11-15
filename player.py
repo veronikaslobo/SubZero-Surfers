@@ -28,7 +28,7 @@ class Player:
         self.lane_positions = [LEFT_LANE_POSITION, MIDDLE_LANE_POSITION, RIGHT_LANE_POSITION]
         self.x_axis_position = self.lane_positions[self.current_lane]
         self.target_x = self.x_axis_position
-        self.slide_speed = 0.07 # pixels/movement
+        self.slide_speed = 1000 # pixels/movement
         self.is_moving = False
 
         image_path = "player/penguin_image1.png"
