@@ -13,7 +13,7 @@ timer = pygame.time.Clock()
 fps = 60
 
 # Class of our car (can be smt else, decide later)
-class Car:
+class Player:
     def __init__(self, x, y, width, height):
         self.x = x
         self.y = y
