@@ -59,6 +59,7 @@ class Player:
         if self.current_lane > 0:
             self.current_lane -= 1
             self.target_x = self.lane_positions[self.current_lane]
+            self.is_moving = True
 
     def update(self):
         self.x_axis_position += (self.target_x - self.x_axis_position) * self.slide_speed
