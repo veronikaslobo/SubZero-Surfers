@@ -1,22 +1,33 @@
 import pygame
-from pygame.examples.cursors import image
+import random
 
+pygame.init()
 # defining images
-glacier_img = pygame.image.load("obstacles/glacier1.png")
+glacier_img = pygame.image.load("images/glacier1.png")
+
+# obstacle images array
+obs_imgs = [glacier_img]
+LANES=[50,100,150]
+game_speed= 5
 
 class Obstacle:
-    def __init__(self, image, x, y, obstacle_type, damage=1):
+    def __init__(self, image, x, y,speed):
         self.image = image
-        self.x = x              # Horizontal position
-        self.y = y              # Vertical position
-        self.width = OBSTACLE_WIDTH    # Width of the obstacle
-        self.height = OBSTACLE_HEIGHT  # Height of the obstacle
-        self.type = obstacle_type       # Type identifier (e.g., 'ice_spike', 'snowball')
-        self.damage = damage           # Damage or effect on player
+        self.rect = image.get_rect(topleft=(x,y))    # track image place by putting it on a rect object
+        self.speed = speed #NEED TO DEFINE GAME SPEED
         self.active = True             # Whether the obstacle is active in the game
 
-    def update(self, speed): # moves down (with game speed)
-        self.y += speed
+    def update(self): # moves down (with game speed)
+        self.rect.y += self.speed
 
     def draw(self, screen):
-        screen.blit(self.image, [self.x, self.y])
+        screen.blit(self.image, self.rect)  # maps image to rect position
+
+
+def spawn_obstacle():
+    image = random.choice(obs_imgs)
+    x = random.choice(LANES) #NEED TO DEFINE X POSITIONS
+    y = -image.get_height()
+    obstacle = Obstacle(image, x, y, game_speed)
+    return obstacle
+
