@@ -39,13 +39,27 @@ while running:
     clock.tick(FPS)
     spawn_timer += 1
 
+    scroll_bg()
+
+    if spawn_timer > 100:
+        obstacles.append(spawn_obstacle())
+        spawn_timer = 0
+        # Update and draw obstacles
+    for obs in obstacles:
+        obs.update()
+        obs.draw(screen)
+        # Remove off-screen obstacles
+    obstacles = [obs for obs in obstacles if obs.rect.top <= SCREEN_HEIGHT]
+
     # Did the user click the window close button?
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
-    # Fill the background with white
-    screen.fill(BLUE)
+    # Fill background
+
+    # generate obstacles
+
 
     # Flip the display
     pygame.display.flip()
