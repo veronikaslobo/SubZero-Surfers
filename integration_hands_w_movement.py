@@ -75,11 +75,10 @@ def player_move(penguin):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             return True
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_RIGHT:
-                penguin.move_right()
-            if event.key == pygame.K_LEFT:
-                penguin.move_left()
+        if event.key == pygame.K_RIGHT:
+            penguin.move_right()
+        if event.key == pygame.K_LEFT:
+            penguin.move_left()
     return False
 
 
