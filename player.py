@@ -13,9 +13,9 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Pygame Movement")
 timer = pygame.time.Clock()
 fps = 60
-LEFT_LANE_POSITION = 200
-MIDDLE_LANE_POSITION = 400
-RIGHT_LANE_POSITION = 600
+LEFT_LANE_POSITION = 150
+MIDDLE_LANE_POSITION = 350
+RIGHT_LANE_POSITION = 550
 
 # Class of our car (can be smt else, decide later)
 class Player:
