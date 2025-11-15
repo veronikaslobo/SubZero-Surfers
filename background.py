@@ -21,27 +21,6 @@ bg_height = bg.get_height()
 
 tiles = math.ceil(SCREEN_HEIGHT / bg_width) + 1
 
-run = True
-while run:
-
-    clock.tick(FPS)
-
-    # scroll is your vertical offset
-    scroll = (scroll + 5) % bg_height
-
-    # draw two vertical tiles
-    screen.blit(bg, (0, scroll - bg_height))
-    screen.blit(bg, (0, scroll))
-
-
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            run = False
-
-    pygame.display.update()
-    
-pygame.quit()
-
 def scroll_bg():
     targetsize = (SCREEN_WIDTH, SCREEN_HEIGHT)
 
