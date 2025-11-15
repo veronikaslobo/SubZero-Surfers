@@ -65,7 +65,6 @@ class Player:
         # Easing function: current + (target - current) * factor
         self.x_axis_position += (self.target_x - self.x_axis_position) * self.slide_speed
 
-        # Snap to target when very close (avoid infinite approaching)
         if abs(self.target_x - self.x_axis_position) < 0.5:
             self.x_axis_position = self.target_x
             self.is_moving = False
