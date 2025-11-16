@@ -218,7 +218,7 @@ def main():
                run = False
             if event.key == pygame.K_RIGHT:
                 peng.move_right()
-            if event.key == pygame.K_LEFT:
+            if event.type == LEFT_EVENT:
                peng.move_left()
             if event.type == PAUSE_EVENT:
                 print("PAUSE event fired")
