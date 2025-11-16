@@ -19,11 +19,13 @@ SCREEN_WIDTH, SCREEN_HEIGHT = 800, 600
 FPS = 60
 obstacles = []
 spawn_timer = 0
-GAME_SPEED = 5
+GAME_SPEED = 7
 score = 0
 scroll = 0
 game_start_time = 0
 survival_time = 0
+TITLE_FONT_PATH = "images/font.ttf" 
+
 
 # COLORS
 WHITE  = (255, 255, 255)
@@ -40,7 +42,7 @@ penguin = Player()
 
 # initialize environment
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("Game name")
+pygame.display.set_caption("Subzero surfers")
 
 # menu background
 menu_bg = pygame.image.load("images/babyblue.png")
@@ -65,6 +67,10 @@ def print_text(text, font, text_col, x, y):
     img = font.render(text, True, text_col)
     screen.blit(img, (x, y))
 
+def print_text_center(text, font, color, y):
+    img = font.render(text, True, color)
+    rect = img.get_rect(center=(SCREEN_WIDTH // 2, y))
+    screen.blit(img, rect)
 
 def show_game_over_screen(current_score):
     """Block until user presses SPACE or closes the window."""
@@ -77,9 +83,10 @@ def show_game_over_screen(current_score):
                 return  # return to caller, which will reset the game
 
         screen.fill(BLACK)
-        print_text('GAME OVER', font_big, WHITE, 130, 200)
-        print_text('SCORE: ' + str(current_score) + ' m', font_big, WHITE, 130, 250)
-        print_text('PRESS SPACE TO PLAY AGAIN', font_big, WHITE, 40, 300)
+        print_text_center('GAME OVER', font_big, WHITE, 200)
+        print_text_center('SCORE: ' + str(current_score) + ' m', font_big, WHITE, 250)
+        print_text_center('PRESS SPACE TO PLAY AGAIN', font_big, WHITE, 300)
+
 
         pygame.display.flip()
         clock.tick(FPS)
@@ -174,8 +181,15 @@ def play():
 
 
 def menu():
+
+    title_font = pygame.font.Font(TITLE_FONT_PATH, 52)
+
     while True:
         screen.blit(menu_bg, (0, 0))
+
+        title_surface = title_font.render("SubZero Surfers", True, WHITE)
+        title_rect = title_surface.get_rect(center=(SCREEN_WIDTH // 2, 120))
+        screen.blit(title_surface, title_rect)
 
         MENU_MOUSE_POS = pygame.mouse.get_pos()
 
