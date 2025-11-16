@@ -79,7 +79,7 @@ def show_game_over_screen(current_score):
         screen.fill(BLACK)
         print_text('GAME OVER', font_big, WHITE, 324, 200)
         print_text('SCORE: ' + str(current_score) + ' m', font_big, WHITE, 320, 250)
-        print_text('PRESS SPACE TO PLAY AGAIN', font_big, WHITE, 220, 300)
+        print_text('PRESS SPACE TO PLAY AGAIN', font_big, WHITE, 230, 300)
 
         pygame.display.flip()
         clock.tick(FPS)
