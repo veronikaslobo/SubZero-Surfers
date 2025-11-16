@@ -7,23 +7,21 @@ import math
 import time
 
 from button import Button
-from combined_game_environment import Obstacle, spawn_obstacle, obs_imgs, LANES
+from combined_game_environment import Obstacle, spawn_obstacle, obs_imgs, LANES, scroll_bg, get_background
 from loosing_screen import check_for_collision
+from player import Player, player_move
 
+# initialize environment
 pygame.init()
-clock = pygame.time.Clock()
 
-game_start_time = 0
-survival_time = 0
-
-# CONSTANTS
+# CONSTANTS and presetting values
 SCREEN_WIDTH, SCREEN_HEIGHT = 800, 600
 FPS = 60
-OBSTACLE_WIDTH, OBSTACLE_HEIGHT = 50, 50
-PLAYER_WIDTH, PLAYER_HEIGHT = 50, 50
+obstacles = []
+spawn_timer = 0
 GAME_SPEED = 5
-
 score = 0
+scroll = 0
 
 # COLORS
 WHITE  = (255, 255, 255)
@@ -31,6 +29,12 @@ BLACK  = (0, 0, 0)
 BLUE   = (189, 228, 255)
 PURPLE = (207, 169, 245)
 YELLOW = (254, 234, 160)
+
+# create base objects
+clock = pygame.time.Clock()
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+bg = get_background()
+penguin = Player()
 
 # initialize environment
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -79,19 +83,12 @@ def show_game_over_screen(current_score):
         clock.tick(FPS)
 
 
-def scroll_bg():
-    global scroll
-    scroll = (scroll + 5) % BG_HEIGHT
-    screen.blit(BG_IMAGE, (0, scroll - BG_HEIGHT))
-    screen.blit(BG_IMAGE, (0, scroll))
-
-
 def get_font(size):  # Returns Press-Start-2P in the desired size
     return pygame.font.Font("images/font.ttf", size)
 
 
 def play():
-    global score, scroll, game_start_time, survival_time
+    global score, scroll
 
     # initial state for a run
     score = 0
@@ -101,12 +98,8 @@ def play():
     collisions = 0
     is_game_over = False
 
-    # TODO: create your player object here
-    player_obj = player.Player()
-
     running = True
     while running:
-        game_start_time = pygame.time.get_ticks()
         clock.tick(FPS)
 
         for event in pygame.event.get():
@@ -115,46 +108,31 @@ def play():
                 sys.exit()
 
         if not is_game_over:
-            # background
-            scroll_bg()
-
-            # TODO: update and draw player here
-            # player_obj.update()
-            # player_obj.draw(screen)
-
-            # spawn obstacles
             spawn_timer += 1
-            if spawn_timer > 100:
+
+            # Fill background
+            scroll = scroll_bg(screen, bg, scroll, GAME_SPEED)
+
+            # adding the penguin movement
+            player_move(penguin)
+            penguin.update()
+            penguin.draw(screen)
+
+            # generate obstacles
+            if spawn_timer > 90:
                 obstacles.append(spawn_obstacle(GAME_SPEED))
                 spawn_timer = 0
-
-            # update & draw obstacles
+                # Update and draw obstacles
             for obs in obstacles:
                 obs.update()
                 obs.draw(screen)
+                if check_for_collision(penguin, obs):
+                    collisions += 1
+                    if collisions >= 3:
+                        is_game_over = True
 
+            # Remove off-screen obstacles
             obstacles = [obs for obs in obstacles if obs.rect.top <= SCREEN_HEIGHT]
-
-            # --- COLLISION CHECK (FIX THIS LINE TO MATCH YOUR FUNCTION SIGNATURE) ---
-            # Example if your function expects (player_rect, obstacles):
-            # if check_for_collision(player_obj.rect, obstacles):
-            # inside play() loop, after updating obstacles
-            hit = False
-            for obs in obstacles:
-                if check_for_collision(player_obj, obs):
-                    hit = True
-                    break
-
-            if hit:
-                collisions += 1
-
-
-            if collisions >= 3:
-                is_game_over = True
-
-            if is_game_over:
-                survival_time = (pygame.time.get_ticks() - game_start_time) / 1000.0 #millisecodns divided to get seconds
-                score = survival_time * 15 # Constant can be changed
 
         else:
             # show game over screen, wait for space
