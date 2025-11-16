@@ -129,7 +129,7 @@ def instructions():
         print_text("INSTRUCTIONS", font_lives_big, (51, 153, 255), 230, 15)
         print_text(" -Movement-", font_big, (51, 153, 255), 50, 100)
         print_text("1. Move left or right using hand gestures only.", font_inst, (255, 255, 255), 50, 150)
-        print_text("2. To move one lane to the left point ur index finger to the left and stop.", font_inst, (255, 255, 255), 50, 200)
+        print_text("2. To move one lane to the left point your index finger to the left and stop.", font_inst, (255, 255, 255), 50, 200)
         print_text("3. To move more than one lane keep pointing.", font_inst, (255, 255, 255), 50, 250)
         print_text("4. The same motion applies to move to the right.", font_inst, (255, 255, 255), 50, 300)
         print_text(" -Game Rules-", font_big, (51, 153, 255), 50, 350)
