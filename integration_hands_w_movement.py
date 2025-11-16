@@ -216,7 +216,7 @@ def main():
        for event in pygame.event.get():
             if event.type == pygame.QUIT:
                run = False
-            if event.key == pygame.K_RIGHT:
+            if event.type == PAUSE_EVENT:
                 peng.move_right()
             if event.type == LEFT_EVENT:
                peng.move_left()
