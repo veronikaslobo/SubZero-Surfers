@@ -4,6 +4,7 @@ import sys
 import cv2
 import mediapipe as mp
 import time
+import asyncio
 
 from button import Button
 from combined_game_environment import Obstacle, spawn_obstacle, obs_imgs, LANES, scroll_bg, get_background
