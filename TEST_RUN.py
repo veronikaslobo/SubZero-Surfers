@@ -64,9 +64,9 @@ def get_gesture(handLms):
 
     THRESH = 0.12
     if index_tip.x < wrist.x - THRESH:
-        return "left"
-    if index_tip.x > wrist.x + THRESH:
         return "right"
+    if index_tip.x > wrist.x + THRESH:
+        return "left"
     return None
 
 def smooth_gesture(g):
