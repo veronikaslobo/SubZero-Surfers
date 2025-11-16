@@ -221,6 +221,32 @@ def main():
             if event.key == pygame.K_LEFT:
                peng.move_left()
 
+       gesture = None
+       # to show the lines on the hands
+       if results.multi_hand_landmarks:
+           for hand_landmarks in results.multi_hand_landmarks:
+               # Draw the hand landmarks and connections on the frame
+               mp_draw.draw_landmarks(
+                   frame,  # the frame you want to draw on
+                   hand_landmarks,
+                   mp_hands.HAND_CONNECTIONS  # draw lines between landmarks
+               )
+           gesture = smooth_gesture(get_gesture(results.multi_hand_landmarks[0]))
+
+       # sending the signals for game response
+       if gesture == "palm_up":
+           pygame.event.post(pygame.event.Event(PAUSE_EVENT))
+       elif gesture == "fist":
+           pygame.event.post(pygame.event.Event(RESUME_EVENT))
+       elif gesture == "left":
+           pygame.event.post(pygame.event.Event(LEFT_EVENT))
+       elif gesture == "right":
+           pygame.event.post(pygame.event.Event(RIGHT_EVENT))
+
+       # to show the webcam (after drawing landmarks!)
+       cv2.imshow("Gesture Camera", frame)
+       if cv2.waitKey(1) & 0xFF == ord('q'):
+           running = False
        peng.update()
        screen.fill((250,250,204))
        peng.draw(screen)
