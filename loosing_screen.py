@@ -2,7 +2,6 @@ import pygame
 from player import Player
 from combined_game_environment import Obstacle
 
-
 def check_for_collision(player, obstacle):
     player_left = player.x_axis_position
     player_right = player.x_axis_position + player.width
