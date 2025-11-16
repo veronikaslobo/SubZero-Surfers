@@ -36,7 +36,7 @@ BG_IMAGE = pygame.transform.scale(BG_IMAGE, (SCREEN_WIDTH, SCREEN_HEIGHT))
 BG_HEIGHT = BG_IMAGE.get_height()
 
 BUTTON_IMG = pygame.image.load("images/button.png").convert()
-BUTTON_IMG = pygame.transform.scale(BUTTON_IMG, (150, 75))
+BUTTON_IMG = pygame.transform.scale(BUTTON_IMG, (350, 75))
 
 HEART_IMG = pygame.image.load("images/ice-heart.png").convert_alpha()
 HEART_IMG = pygame.transform.scale(HEART_IMG, (70, 70))  # adjust size if needed
