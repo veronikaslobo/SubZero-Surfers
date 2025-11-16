@@ -45,8 +45,9 @@ HEART_IMG = pygame.transform.scale(HEART_IMG, (70, 70))  # adjust size if needed
 
 # FONTS
 font_small = pygame.font.SysFont('Lucida Sans', 20)
-font_big = pygame.font.SysFont('Lucida Sans', 24)
-font_lives_big = pygame.font.SysFont('Lucida Sans', 40)
+font_big = pygame.font.SysFont('Lucida Sans', 34)
+font_lives_big = pygame.font.SysFont('Lucida Sans', 50)
+font_inst = pygame.font.SysFont('Lucida Sans', 28)
 
 # BACKGROUND
 bg = get_background()
@@ -119,15 +120,15 @@ def instructions():
         mouse_pos = pygame.mouse.get_pos()
 
         # Display instructions text
-        print_text("INSTRUCTIONS", font_lives_big, (255, 209, 28), 250, 50)
-        print_text("1. ____Movement____", font_big, (255, 209, 28), 50, 100)
-        print_text("2. Move left or right using hand gestures only", font_small, (255, 255, 255), 50, 150)
-        print_text("3. To move one lane to the left point ur index finger to the left and stop", font_small, (255, 255, 255), 50, 200)
-        print_text("4. To move more than one lane keep pointing", font_small, (255, 255, 255), 50, 250)
-        print_text("5. The same motion applies to move to the right", font_small, (255, 255, 255), 50, 300)
-        print_text("6. ----game rules----", font_big, (255, 209, 28), 50, 350)
-        print_text("7. You have 3 lives in the game indicated my the hearts on top of the screen", font_small, (255, 255, 255), 50, 400)
-        print_text("8. Everytime you hit an obstacle it disappears and you continue playing", font_small, (255, 255, 255), 50, 450)
+        print_text("INSTRUCTIONS", font_lives_big, (51, 153, 255), 250, 55)
+        print_text(" -Movement-", font_big, (51, 153, 255), 50, 100)
+        print_text("1. Move left or right using hand gestures only.", font_inst, (255, 255, 255), 50, 150)
+        print_text("2. To move one lane to the left point ur index finger to the left and stop.", font_inst, (255, 255, 255), 50, 200)
+        print_text("3. To move more than one lane keep pointing.", font_inst, (255, 255, 255), 50, 250)
+        print_text("4. The same motion applies to move to the right.", font_inst, (255, 255, 255), 50, 300)
+        print_text(" -Game Rules-", font_big, (51, 153, 255), 50, 350)
+        print_text("1. You have 3 lives in the game indicated my the hearts on top of the screen.", font_inst, (255, 255, 255), 50, 400)
+        print_text("2. Everytime you hit an obstacle it disappears and you continue playing.", font_inst, (255, 255, 255), 50, 450)
 
 
         # Back button (optional)
@@ -268,6 +269,38 @@ def play():
     pygame.quit()
     sys.exit()
 
+def level_select():
+    while True:
+        screen.fill((80, 180, 250))
+        mouse_pos = pygame.mouse.get_pos()
+
+        print_text("SELECT LEVEL", font_big, WHITE, 280, 80)
+
+        EASY_BUTTON = Button(image=BUTTON_IMG, x_pos=400, y_pos=400, text_input="EASY")
+        MEDIUM_BUTTON = Button(image=BUTTON_IMG, x_pos=400, y_pos=400, text_input="MEDIUM")
+        HARD_BUTTON = Button(image=BUTTON_IMG, x_pos=400, y_pos=400, text_input="HARD")
+
+        buttons = [EASY_BUTTON, MEDIUM_BUTTON, HARD_BUTTON]
+
+        for button in buttons:
+            button.changeColor(mouse_pos)
+            button.update(screen)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if EASY_BUTTON.checkForInput(mouse_pos):
+                    play(speed=5)
+                if MED_BUTTON.checkForInput(mouse_pos):
+                    play(speed=10)
+                if HARD_BUTTON.checkForInput(mouse_pos):
+                    play(speed=15)
+
+        pygame.display.update()
+
 # ------------------ MENU ------------------
 def menu():
     while True:
@@ -277,9 +310,6 @@ def menu():
         PLAY_BUTTON = Button(image=BUTTON_IMG, x_pos=400, y_pos=200, text_input="PLAY")
         INSTR_BUTTON = Button(image=BUTTON_IMG, x_pos=400, y_pos=300, text_input="INSTRUCTIONS")
         QUIT_BUTTON = Button(image=BUTTON_IMG, x_pos=400, y_pos=400, text_input="QUIT")
-        EASY_BUTTON = Button(image = BUTTON_IMG, x_pos=400, y_pos=400, text_input="EASY")
-        MEDIUM_BUTTON = Button(image=BUTTON_IMG, x_pos=400, y_pos=400, text_input="MEDIUM")
-        HARD_BUTTON = Button(image=BUTTON_IMG, x_pos=400, y_pos=400, text_input="HARD")
 
         buttons = [PLAY_BUTTON, INSTR_BUTTON, QUIT_BUTTON]
 
