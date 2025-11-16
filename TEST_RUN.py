@@ -20,6 +20,7 @@ FPS = 60
 # COLORS
 WHITE  = (255, 255, 255)
 BLACK  = (0, 0, 0)
+RED = (255, 0, 0)
 
 # Pygame objects
 clock = pygame.time.Clock()
@@ -37,9 +38,14 @@ BG_HEIGHT = BG_IMAGE.get_height()
 BUTTON_IMG = pygame.image.load("images/button.png").convert()
 BUTTON_IMG = pygame.transform.scale(BUTTON_IMG, (150, 75))
 
+HEART_IMG = pygame.image.load("images/ice-heart.png").convert_alpha()
+HEART_IMG = pygame.transform.scale(HEART_IMG, (70, 70))  # adjust size if needed
+
+
 # FONTS
 font_small = pygame.font.SysFont('Lucida Sans', 20)
 font_big = pygame.font.SysFont('Lucida Sans', 24)
+font_lives_big = pygame.font.SysFont('Lucida Sans', 40)
 
 # BACKGROUND
 bg = get_background()
@@ -103,6 +109,44 @@ def show_game_over_screen(current_score):
         print_text('PRESS SPACE TO PLAY AGAIN', font_big, WHITE, 40, 300)
         pygame.display.flip()
         clock.tick(FPS)
+
+# instrcutions page for those who wanna see
+
+def instructions():
+    while True:
+        screen.fill((50, 150, 255))  # light blue background
+        mouse_pos = pygame.mouse.get_pos()
+
+        # Display instructions text
+        print_text("INSTRUCTIONS", font_lives_big, (255, 255, 255), 250, 50)
+        print_text("1. ____Movement____", font_small, (255, 255, 255), 50, 150)
+        print_text("2. Move left or right using hand gestures only", font_big, (255, 255, 255), 50, 200)
+        print_text("3. To move one lane to the left point ur index finger to the left and stop", font_small, (255, 255, 255), 50, 250)
+        print_text("4. To move more than one lane keep pointing", font_small, (255, 255, 255), 50, 300)
+        print_text("5. The same motion applies to move to the right", font_small, (255, 255, 255), 50, 350)
+        print_text("6. ----game rules----", font_big, (255, 255, 255), 50, 400)
+        print_text("7. You have 3 lives in the game indicated my the hearts on top of the screen", font_small, (255, 255, 255), 50, 450)
+        print_text("8. Everytime you hit an obstacle it disappears and you continue playing", font_small, (255, 255, 255), 50, 500)
+        print_text("Press SPACE to start the game", font_small, (255, 255, 255), 50, 550)
+
+        # Back button (optional)
+        BACK_BUTTON = Button(image=BUTTON_IMG, x_pos=400, y_pos=450, text_input="BACK")
+        BACK_BUTTON.changeColor(mouse_pos)
+        BACK_BUTTON.update(screen)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                cv2.destroyAllWindows()
+                sys.exit()
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                return  # Start the game
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if BACK_BUTTON.checkForInput(mouse_pos):
+                    return  # Start the game
+
+        pygame.display.update()
+
 
 # ------------------ GAME LOOP ------------------
 def play():
@@ -175,6 +219,16 @@ def play():
         penguin.update(dt)
         penguin.draw(screen)
 
+        # -- display collisions--
+        # lives_left = 3 - collisions
+        # print_text(f"Lives: {lives_left}", font_lives_big, RED, 400, 10)
+
+        # Draw hearts for remaining lives
+        for i in range(3 - collisions):  # 3 is total lives
+            screen.blit(HEART_IMG, (300 + i *80, 10))  # 50px spacing between hearts
+
+        #10,10 for centre of screen
+
         # --- Spawn obstacles ---
         if not is_game_over:
             spawn_timer += 1
@@ -219,10 +273,13 @@ def menu():
         screen.blit(menu_bg, (0, 0))
         MENU_MOUSE_POS = pygame.mouse.get_pos()
 
-        PLAY_BUTTON = Button(image=BUTTON_IMG, x_pos=400, y_pos=250, text_input="PLAY")
-        QUIT_BUTTON = Button(image=BUTTON_IMG, x_pos=400, y_pos=350, text_input="QUIT")
+        PLAY_BUTTON = Button(image=BUTTON_IMG, x_pos=400, y_pos=200, text_input="PLAY")
+        INSTR_BUTTON = Button(image=BUTTON_IMG, x_pos=400, y_pos=300, text_input="INSTRUCTIONS")
+        QUIT_BUTTON = Button(image=BUTTON_IMG, x_pos=400, y_pos=400, text_input="QUIT")
 
-        for button in [PLAY_BUTTON, QUIT_BUTTON]:
+        buttons = [PLAY_BUTTON, INSTR_BUTTON, QUIT_BUTTON]
+
+        for button in buttons:
             button.changeColor(MENU_MOUSE_POS)
             button.update(screen)
 
@@ -234,10 +291,13 @@ def menu():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
                     play()
+                if INSTR_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    instructions()
                 if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
                     pygame.quit()
                     cv2.destroyAllWindows()
                     sys.exit()
+
 
         pygame.display.update()
 
