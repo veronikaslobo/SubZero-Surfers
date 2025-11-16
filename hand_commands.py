@@ -5,8 +5,10 @@ import pygame   # to send the outputs
 
 pygame.init()  #to use the .events
 
-screen = pygame.display.set_mode((800, 600))
+screen = pygame.display.set_mode((100, 100))
 pygame.display.set_caption("penguin surf")
+
+
 
 # my gesture events for the game
 PAUSE_EVENT = pygame.USEREVENT + 1
@@ -22,6 +24,24 @@ hands = mp_hands.Hands(max_num_hands=1) # cuz we only need one
 
 # use cap to start the camera
 cap = cv2.VideoCapture(0)  # usually 0 for default camera
+
+display_width = 100
+display_height = 100
+
+cv2.namedWindow("Camera Feed (Resized)", cv2.WINDOW_NORMAL)
+cv2.resizeWindow("Camera Feed (Resized)", display_width, display_height)
+
+while True:
+    ret, frame = cap.read()
+    if not ret:
+        break
+
+    resized_frame = cv2.resize(frame, (display_width, display_height))
+    cv2.imshow("Camera Feed (Resized)", resized_frame)
+
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
 
 #create a gesture buffer so that
 gesture_buffer = []
