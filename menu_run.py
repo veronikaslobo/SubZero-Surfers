@@ -98,6 +98,12 @@ def play():
     collisions = 0
     is_game_over = False
 
+    # Reset penguin to middle lane
+    penguin.current_lane = 1
+    penguin.x_axis_position = penguin.lane_positions[1]
+    penguin.target_x = penguin.x_axis_position
+    penguin.is_moving = False
+
     running = True
     while running:
         dt = clock.tick(FPS) /1000
@@ -118,6 +124,7 @@ def play():
             penguin.update(dt)
             penguin.draw(screen)
 
+
             # generate obstacles
             if spawn_timer > 90:
                 obstacles.append(spawn_obstacle(GAME_SPEED))
@@ -128,8 +135,9 @@ def play():
                 obs.draw(screen)
                 if check_for_collision(penguin, obs):
                     collisions += 1
-                    if collisions >= 3:
-                        is_game_over = True
+                    break
+            if collisions >= 3:
+                is_game_over = True
 
             # Remove off-screen obstacles
             obstacles = [obs for obs in obstacles if obs.rect.top <= SCREEN_HEIGHT]
@@ -143,6 +151,8 @@ def play():
             obstacles.clear()
             collisions = 0
             is_game_over = False
+
+
 
         pygame.display.flip()
 
