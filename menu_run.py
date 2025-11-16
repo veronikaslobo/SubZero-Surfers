@@ -22,6 +22,8 @@ spawn_timer = 0
 GAME_SPEED = 5
 score = 0
 scroll = 0
+game_start_time = 0
+survival_time = 0
 
 # COLORS
 WHITE  = (255, 255, 255)
