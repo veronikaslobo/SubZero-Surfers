@@ -99,17 +99,15 @@ def play():
     spawn_timer = 0
     obstacles = []
     collisions = 0
+    damage_cooldown = 0.0
     is_game_over = False
-
-    # Reset penguin to middle lane
-    penguin.current_lane = 1
-    penguin.x_axis_position = penguin.lane_positions[1]
-    penguin.target_x = penguin.x_axis_position
-    penguin.is_moving = False
 
     running = True
     while running:
         dt = clock.tick(FPS) /1000
+
+        if damage_cooldown > 0:
+            damage_cooldown -= dt
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -127,20 +125,30 @@ def play():
             penguin.update(dt)
             penguin.draw(screen)
 
-
             # generate obstacles
+                        # generate obstacles
             if spawn_timer > 90:
                 obstacles.append(spawn_obstacle(GAME_SPEED))
                 spawn_timer = 0
-                # Update and draw obstacles
-            for obs in obstacles:
+
+            # Update, draw, and check collisions
+            for obs in obstacles[:]:  # iterate over a copy so we can remove
                 obs.update()
                 obs.draw(screen)
-                if check_for_collision(penguin, obs):
+
+                # only take damage if cooldown is over
+                if damage_cooldown <= 0 and check_for_collision(penguin, obs):
                     collisions += 1
-                    break
-            if collisions >= 3:
-                is_game_over = True
+                    damage_cooldown = 1.0  # 1 second of invincibility
+                    obstacles.remove(obs)  # remove that obstacle so it can't hit again
+
+                    if collisions >= 3:
+                        is_game_over = True
+                        break  # no need to check other obstacles this frame
+
+            # Remove off-screen obstacles
+            obstacles = [obs for obs in obstacles if obs.rect.top <= SCREEN_HEIGHT]
+
 
             if is_game_over:
                 survival_time = (pygame.time.get_ticks() - game_start_time) / 1000.0 #millisecodns divided to get seconds
@@ -161,8 +169,6 @@ def play():
             obstacles.clear()
             collisions = 0
             is_game_over = False
-
-
 
         pygame.display.flip()
 
