@@ -31,6 +31,7 @@ BLACK  = (0, 0, 0)
 BLUE   = (189, 228, 255)
 PURPLE = (207, 169, 245)
 YELLOW = (254, 234, 160)
+RED = (255, 0, 0)
 
 # initialize environment
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -39,6 +40,11 @@ pygame.display.set_caption("Game name")
 # menu background
 menu_bg = pygame.image.load("images/babyblue.png")
 menu_bg = pygame.transform.scale(menu_bg, (SCREEN_WIDTH, SCREEN_HEIGHT))
+
+# image for the number of lives
+HEART_IMG = pygame.image.load("images/heart.png").convert_alpha()
+HEART_IMG = pygame.transform.scale(HEART_IMG, (40, 40))
+
 
 # game background (scrolling)
 BG_IMAGE = pygame.image.load("images/background.png").convert()
