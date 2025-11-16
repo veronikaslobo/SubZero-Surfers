@@ -107,6 +107,8 @@ def play():
 
     running = True
     while running:
+        game_start_time = pygame.time.get_ticks()
+        game_active = True
         clock.tick(FPS)
 
         for event in pygame.event.get():
