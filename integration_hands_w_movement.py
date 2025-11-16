@@ -29,30 +29,43 @@ cap = cv2.VideoCapture(0)  # usually 0 for default camera
 
 #create a gesture buffer so that
 gesture_buffer = []
-BUFFER_FRAMES = 5
+BUFFER_FRAMES = 10
 
 #gesture detection function
 def get_gesture(handLms):
     TH = mp_hands.HandLandmark
-    tips = [handLms.landmark[i] for i in [TH.THUMB_TIP, TH.INDEX_FINGER_TIP, TH.MIDDLE_FINGER_TIP,
-                                          TH.RING_FINGER_TIP, TH.PINKY_TIP ]]
-    wrist = handLms.landmark[TH.WRIST]
 
-    # for the fist
-    if all(tip.y > wrist.y for tip in tips):
-        return "fist"
-    #palm up
-    if all(tip.y < wrist.y for tip in tips):
-        return "palm_up"
-    #left and right
-    index_tip = tips[1] #for detecting a point
-    other_tips = [tips[i] for i in [0,2,3,4]]
-    if index_tip.y < wrist.y or all(t.y > wrist.y for t in other_tips):
-        if index_tip.x < wrist.x - 0.3:
-            return "right"
-        elif index_tip.x > wrist.x + 0.3:
-            return "left"
-    return None  # if no gesture matches
+    # fingertip landmarks
+    tips = [handLms.landmark[i] for i in [
+        TH.THUMB_TIP,
+        TH.INDEX_FINGER_TIP,
+        TH.MIDDLE_FINGER_TIP,
+        TH.RING_FINGER_TIP,
+        TH.PINKY_TIP
+    ]]
+
+    wrist = handLms.landmark[TH.WRIST]
+    index_tip = tips[1]   # pointer finger
+
+    # # ----- FIST -----
+    # if all(tip.y > wrist.y for tip in tips):
+    #     return "fist"
+    #
+    # # ----- PALM UP -----
+    # # require ALL fingers clearly raised
+    # if all(tip.y < wrist.y - 0.05 for tip in tips):
+    #     return "palm_up"
+
+    # ----- LEFT / RIGHT -----
+    THRESH = 0.12
+
+    if index_tip.x < wrist.x - THRESH:
+        return "left"
+
+    if index_tip.x > wrist.x + THRESH:
+        return "right"
+
+    return None
 
 # clearing buffer if no gesture
 def smooth_gesture(g):
@@ -145,7 +158,7 @@ class Player:
         self.lane_positions = [LEFT_LANE_POSITION, MIDDLE_LANE_POSITION, RIGHT_LANE_POSITION]
         self.x_axis_position = self.lane_positions[self.current_lane]
         self.target_x = self.x_axis_position
-        self.slide_speed = 0.07 # pixels/movement
+        self.slide_speed = 0.2 # pixels/movement
         self.is_moving = False
 
         image_path = "player/penguin_image1.png"
@@ -186,7 +199,8 @@ class Player:
             self.is_moving = False
 
 
-    # def accelerate(self):
+    # def accelerate():
+
 
 
 
@@ -216,18 +230,18 @@ def main():
        for event in pygame.event.get():
             if event.type == pygame.QUIT:
                run = False
-            if event.type == PAUSE_EVENT:
-                peng.move_right()
-            if event.type == LEFT_EVENT:
-               peng.move_left()
-            if event.type == PAUSE_EVENT:
-                print("PAUSE event fired")
-            if event.type == RESUME_EVENT:
-                print("RESUME event fired")
-            if event.type == LEFT_EVENT:
-                print("LEFT event fired")
-            if event.type == RIGHT_EVENT:
-                print("RIGHT event fired")
+            # if event.type == PAUSE_EVENT:
+            #     peng.move_right()
+            # if event.type == LEFT_EVENT:
+            #    peng.move_left()
+            # # if event.type == PAUSE_EVENT:
+            # #    print("PAUSE event fired")
+            # # if event.type == RESUME_EVENT:
+            # #     print("RESUME event fired")
+            # if event.type == LEFT_EVENT:
+            #     print("LEFT event fired")
+            # if event.type == RIGHT_EVENT:
+            #     print("RIGHT event fired")
 
        # the camera detection
        ret, frame = cap.read()
@@ -250,14 +264,16 @@ def main():
            gesture = smooth_gesture(get_gesture(results.multi_hand_landmarks[0]))
 
        # sending the signals for game response
-       if gesture == "palm_up":
-           pygame.event.post(pygame.event.Event(PAUSE_EVENT))
-       elif gesture == "fist":
+       # if gesture == "palm_up":
+       #     pygame.event.post(pygame.event.Event(PAUSE_EVENT))
+       # elif gesture == "fist":
            pygame.event.post(pygame.event.Event(RESUME_EVENT))
-       elif gesture == "left":
-           pygame.event.post(pygame.event.Event(LEFT_EVENT))
+       if gesture == "left":
+           print("LEFT gesture detected")
+           peng.move_left()
        elif gesture == "right":
-           pygame.event.post(pygame.event.Event(RIGHT_EVENT))
+           print("RIGHT gesture detected")
+           peng.move_right()
 
        # to show the webcam (after drawing landmarks!)
        cv2.imshow("Gesture Camera", frame)
@@ -274,5 +290,3 @@ main()
 cap.release()
 cv2.destroyAllWindows()
 pygame.quit()
-
-

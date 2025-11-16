@@ -22,6 +22,8 @@ spawn_timer = 0
 GAME_SPEED = 5
 score = 0
 scroll = 0
+game_start_time = 0
+survival_time = 0
 
 # COLORS
 WHITE  = (255, 255, 255)
@@ -76,7 +78,7 @@ def show_game_over_screen(current_score):
 
         screen.fill(BLACK)
         print_text('GAME OVER', font_big, WHITE, 130, 200)
-        print_text('SCORE: ' + str(current_score), font_big, WHITE, 130, 250)
+        print_text('SCORE: ' + str(current_score) + ' m', font_big, WHITE, 130, 250)
         print_text('PRESS SPACE TO PLAY AGAIN', font_big, WHITE, 40, 300)
 
         pygame.display.flip()
@@ -88,7 +90,8 @@ def get_font(size):  # Returns Press-Start-2P in the desired size
 
 
 def play():
-    global score, scroll
+    global score, scroll, game_start_time
+    game_start_time = pygame.time.get_ticks()
 
     # initial state for a run
     score = 0
@@ -146,6 +149,10 @@ def play():
             # Remove off-screen obstacles
             obstacles = [obs for obs in obstacles if obs.rect.top <= SCREEN_HEIGHT]
 
+
+            if is_game_over:
+                survival_time = (pygame.time.get_ticks() - game_start_time) / 1000.0 #millisecodns divided to get seconds
+                score = int(survival_time * 15) # Constant can be changed
 
             # Remove off-screen obstacles
             obstacles = [obs for obs in obstacles if obs.rect.top <= SCREEN_HEIGHT]
